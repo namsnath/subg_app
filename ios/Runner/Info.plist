@@ -21,6 +21,10 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your prompt</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+    	<string>Your prompt</string>
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
