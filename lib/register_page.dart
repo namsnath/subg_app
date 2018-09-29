@@ -98,16 +98,16 @@ class _RegisterPageState extends State<RegisterPage> {
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: Material(
         //borderRadius: BorderRadius.circular(30.0),
-        shadowColor: Colors.lightGreenAccent.shade100,
+        //shadowColor: Colors.lightGreenAccent.shade100,
         //elevation: 5.0,
         child: MaterialButton(
           minWidth: 200.0,
           height: 42.0,
           onPressed: () {
-            Navigator.of(context).pushReplacementNamed(HomePage.tag);
+            Navigator.of(context).pushReplacementNamed(Round1Page.tag);
           },
-          color: Colors.lightGreenAccent,
-          child: Text('Log In', style: TextStyle(color: Colors.black)),
+          color: Theme.of(context).accentColor,
+          child: Text('Log In'),
         ),
       )
     );
