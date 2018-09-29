@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:simple_permissions/simple_permissions.dart';
 import 'package:geolocator/geolocator.dart';
+import 'dart:math';
 
 class HomePage extends StatefulWidget {
   static String tag = 'home-page';
@@ -16,8 +17,10 @@ class _HomePageState extends State<HomePage> {
   Permission permission;
   Position position;
   String posString = "Unknown";
+  var currentDistances = {'sjt': 0, 'tt': 0, 'smv': 0, 'gdn': 0};
 
-  double sjtDistance, ttDistance, smvDistance, gdnDistance;
+  String closestStr;
+  int closestDist;
 
   TextEditingController _c = new TextEditingController();
   TextEditingController _sjt = new TextEditingController();
@@ -37,7 +40,7 @@ class _HomePageState extends State<HomePage> {
   final latGDN = 12.969871;
   final lonGDN = 79.154794;
 
-  final radius = 50;
+  final radius = 500;
 
   @override
   onRequest(Permission permission) {
@@ -57,10 +60,22 @@ class _HomePageState extends State<HomePage> {
     double smvDist = await Geolocator().distanceBetween(lat, lon, latSMV, lonSMV);
     double gdnDist = await Geolocator().distanceBetween(lat, lon, latGDN, lonGDN);
 
-    sjtDistance = sjtDist;
-    ttDistance = ttDist;
-    smvDistance = smvDist;
-    gdnDistance = gdnDist;
+    //sjtDistance = sjtDist;
+    //ttDistance = ttDist;
+    //smvDistance = smvDist;
+    //gdnDistance = gdnDist;
+
+    currentDistances['sjt'] = sjtDist.round();
+    currentDistances['tt'] = ttDist.round();
+    currentDistances['smv'] = smvDist.round();
+    currentDistances['gdn'] = gdnDist.round();
+    //print(currentDistances);
+
+    var dist = currentDistances.values.toList();
+    dist.sort();
+    closestDist = dist[0];
+    closestStr = currentDistances.keys.firstWhere(
+            (k) => currentDistances[k] == dist[0], orElse: () => '');
 
     _sjt.text = sjtDist.toString();
     _tt.text = ttDist.toString();
@@ -97,27 +112,35 @@ class _HomePageState extends State<HomePage> {
         });
 
     pos.then((post) async {
+      //print(post);
+      _c.text = post.toString();
+      //print(post.latitude);
+      //print(post.longitude);
       await getDistance(post.latitude, post.longitude);
 
-      if(sjtDistance < 205)
-        posString = "SJT";
-      else if (ttDistance < 205)
-        posString = "TT";
-      else if(smvDistance < 205)
-        posString = "SMV";
-      else if(gdnDistance < 205)
-        posString = "GDN";
+      /*if(currentDistances['sjt'] < radius)
+        posString = "SJT (${currentDistances['sjt']}m away)";
+      else if (currentDistances['tt'] < radius)
+        posString = "SJT (${currentDistances['tt']}m away)";
+      else if(currentDistances['smv'] < radius)
+        posString = "SJT (${currentDistances['smv']}m away)";
+      else if(currentDistances['gdn'] < radius)
+        posString = "SJT (${currentDistances['gdn']}m away)";
       else
         posString = "Unknown";
-
+      print(posString);*/
+      //print(closestStr);
+      switch(closestStr) {
+        case 'sjt': {posString = "SJT (${currentDistances['sjt']}m away)";} break;
+        case 'tt': {posString = "TT (${currentDistances['tt']}m away)";} break;
+        case 'smv': {posString = "SMV (${currentDistances['smv']}m away)";} break;
+        case 'gdn': {posString = "GDN (${currentDistances['gdn']}m away)";} break;
+        default: posString = "Unknown";
+      }
+      //print(posString);
       setState(() {
         posString;
       });
-      print(pos);
-      _c.text = post.toString();
-      print(post.latitude);
-      print(post.longitude);
-      getDistance(post.latitude, post.longitude);
     }).catchError((err) =>
       //Do something maybe?
       print(err));
@@ -206,17 +229,7 @@ class _HomePageState extends State<HomePage> {
               print(geolocationStatus);
 
               if(geolocationStatus == GeolocationStatus.granted) {
-                //pos = await Geolocator().getCurrentPosition(LocationAccuracy.high);
                 await getLocation();
-                /*Future<Position> pos = Geolocator().getCurrentPosition();
-                pos.timeout(const Duration (seconds: 5), onTimeout: _onTimeout);
-                pos.then((post) async {
-                  _c.text = post.toString();
-                  print(post.latitude);
-                  print(post.longitude);
-                  getDistance(post.latitude, post.longitude);
-                });*/
-                //_sjt = getDistances(p1Lat, p1Lon, p2Lat, p2Lon)
               }
               else print("Not granted I guess.");
 
