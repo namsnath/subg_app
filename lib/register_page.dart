@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'round1_page.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -10,7 +11,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final regs = [
+  /*final regs = [
     {
       "registered": false,
       "_id": "5bb06bd98884a4659421cda5",
@@ -47,9 +48,10 @@ class _RegisterPageState extends State<RegisterPage> {
       "gravitasID": "G18I4132",
       "regNo": "17BCE0987"
     }
-  ];
+  ];*/
+  var regs;
 
-  List<String> reglist;
+  List<dynamic> reglist;
 
   final reg = [
     'G18I1234 - Namit Nathwani',
@@ -65,9 +67,20 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _typeAheadController1 = TextEditingController();
   final TextEditingController _typeAheadController2 = TextEditingController();
 
+  void init() async {
+    var url = 'http://35.190.149.120/getNotRegistered';
+    await http.get(url)
+        .then((response) async {
+      print("Response status: ${response.statusCode}");
+      print("Response body: ${response.body}");
+      regs = await jsonDecode(response.body);
+    });
+    reglist = regs.map((reg) => (reg['gravitasID'] + " - " + reg['name']).toString()).toList();
+  }
+
   @override
   void initState() {
-    reglist = regs.map((reg) => (reg['gravitasID'].toString() + " - " + reg['name'].toString()).toString()).toList();
+    init();
   }
 
   @override
