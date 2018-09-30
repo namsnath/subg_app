@@ -61,7 +61,7 @@ class _Round1PageState extends State<Round1Page> {
   }
 
   reqPermission() async {
-    bool res = await SimplePermissions.requestPermission(Permission.AccessFineLocation);
+    final res = await SimplePermissions.requestPermission(Permission.AccessFineLocation);
     print("permission request result is " + res.toString());
   }
 
@@ -92,7 +92,10 @@ class _Round1PageState extends State<Round1Page> {
   }
 
   getLocation() async{
-    await reqPermission();
+    GeolocationStatus geolocationStatus  = await Geolocator().checkGeolocationPermissionStatus();
+    if(geolocationStatus != GeolocationStatus.granted)
+      await reqPermission();
+
     Future<Position> pos = Geolocator().getCurrentPosition();
     pos.timeout(const Duration (seconds: 5), onTimeout: () => _onTimeout())
         .catchError((err){

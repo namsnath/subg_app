@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   reqPermission() async {
-    bool res = await SimplePermissions.requestPermission(Permission.AccessFineLocation);
+    final res = await SimplePermissions.requestPermission(Permission.AccessFineLocation);
     print("permission request result is " + res.toString());
   }
 

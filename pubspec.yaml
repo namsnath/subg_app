@@ -12,6 +12,7 @@ dependencies:
   flutter_typeahead: ^0.3.0
   simple_permissions: ^0.1.6
   geolocator: ^1.7.0
+  http: ^0.11.3+17
 
 dev_dependencies:
   flutter_test:
