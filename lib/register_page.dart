@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'round1_page.dart';
 
@@ -11,6 +12,13 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  GlobalKey<ScaffoldState> _registerScaffoldKey = new GlobalKey();
+
+  String p1, p2;
+  bool _autoValidate = false;
+  bool visibilityForm = false;
+
   /*final regs = [
     {
       "registered": false,
@@ -67,15 +75,59 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _typeAheadController1 = TextEditingController();
   final TextEditingController _typeAheadController2 = TextEditingController();
 
+  void submitTeam() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (_formKey.currentState.validate()) {
+      // No any error in validation
+      _formKey.currentState.save();
+      var p1Data = p1.split(" - ");
+      var p2Data = p2.split(" - ");
+
+      var url = 'http://104.196.117.29/register/new';
+      var body = {'name1': p1Data[1], 'gravitasId1': p1Data[0], 'name2': p2Data[1], 'gravitasId2': p2Data[0]};
+      print(body);
+      await http.post(url, body: body)
+          .then((res) {
+            print(res.body);
+      });
+
+      Navigator.of(context).pushReplacementNamed(Round1Page.tag);
+
+    } else {
+      print("Validation error part");
+      setState(() {
+        _autoValidate = true;
+      });
+      /*_registerScaffoldKey.currentState.showSnackBar(new SnackBar(
+                content: new Text("Enter Data"),
+              ));*/
+    }
+  }
+
+
+
   void init() async {
-    var url = 'http://35.190.149.120/getNotRegistered';
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var teamID = prefs.getInt('teamID') ?? null;
+    print('Team ID: $teamID');
+
+    var url = 'http://104.196.117.29/getNotRegistered';
     await http.get(url)
         .then((response) async {
       print("Response status: ${response.statusCode}");
       print("Response body: ${response.body}");
       regs = await jsonDecode(response.body);
+
+      /*_registerScaffoldKey.currentState.showSnackBar(new SnackBar(
+        content: new Text("Participant Data loaded"),
+      ));*/
     });
-    reglist = regs.map((reg) => (reg['gravitasID'] + " - " + reg['name']).toString()).toList();
+
+    reglist = regs.map((reg) => (reg['gravitasId'] + " - " + reg['name']).toString()).toList();
+    setState(() {
+      reglist;
+      visibilityForm = true;
+    });
   }
 
   @override
@@ -85,11 +137,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-    GlobalKey<ScaffoldState> _registerScaffoldKey = new GlobalKey();
-    bool _autoValidate = true;
-
-    String p1, p2;
 
     final tatxtParticipant1 = TypeAheadFormField(
       textFieldConfiguration: TextFieldConfiguration(
@@ -170,22 +217,7 @@ class _RegisterPageState extends State<RegisterPage> {
         child: MaterialButton(
           minWidth: 200.0,
           height: 42.0,
-          onPressed: () {
-            if (_formKey.currentState.validate()) {
-              // No any error in validation
-              _formKey.currentState.save();
-              print("Participant 1: $p1");
-              print("Participant 2: $p2");
-              Navigator.of(context).pushReplacementNamed(Round1Page.tag);
-            } else {
-              print("Validation error part");
-              /*_registerScaffoldKey.currentState.showSnackBar(new SnackBar(
-                content: new Text("Enter Data"),
-              ));*/
-            }
-
-
-          },
+          onPressed: submitTeam,
           color: Theme.of(context).accentColor,
           child: Text('Log In'),
 
@@ -199,7 +231,7 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
       key: _registerScaffoldKey,
       body: Center(
-          child: Form(
+          child: visibilityForm ? Form(
             key: _formKey,
             autovalidate: _autoValidate,
             child: ListView(
@@ -214,6 +246,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ],
             )
           )
+              : new Text("Loading Data")
       )
     );
   }
