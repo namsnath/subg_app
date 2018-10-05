@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'register_page.dart';
 import 'home-page.dart';
 import 'round1_page.dart';
+import 'task1_page.dart';
+import 'task2_page.dart';
+import 'task3_page.dart';
+
 
 void main() => runApp(SUBGApp());
 
@@ -18,9 +22,9 @@ class SUBGApp extends StatelessWidget {
       title: 'SUBG App Thingy',
       theme: ThemeData(
         //primarySwatch: Colors.lightGreen,
-        brightness: Brightness.light,
-        primaryColor: Colors.blue,
-        accentColor: Colors.blueAccent,
+        brightness: Brightness.dark,
+        primaryColor: Colors.amberAccent,
+        accentColor: Colors.amber,
       ),
       home: RegisterPage(),
       routes: routes,

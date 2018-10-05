@@ -61,13 +61,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   List<dynamic> reglist;
 
-  final reg = [
-    'G18I1234 - Namit Nathwani',
-    'G18I4321 - Yash Gupta',
-    'G18I4123 - Shovan Singh',
-    'G18I4132 - Manan Rajvir',
-  ];
-
   List filter(String filtertext) {
     return reglist.where((f) => f.toUpperCase().contains(filtertext.toUpperCase())).toList();
   }
@@ -88,7 +81,7 @@ class _RegisterPageState extends State<RegisterPage> {
       print(body);
       await http.post(url, body: body)
           .then((res) {
-            print(res.body);
+            print("Post Successfull"+res.body);
       });
 
       Navigator.of(context).pushReplacementNamed(Round1Page.tag);
