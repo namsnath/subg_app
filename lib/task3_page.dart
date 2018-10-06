@@ -6,7 +6,7 @@ import 'package:geolocator/geolocator.dart';
 
 
 class Task3_Page extends StatelessWidget{
-  final String location;
+   final String location;
   Task3_Page({Key key, @required this.location }): super(key:key);
 
   @override
@@ -23,7 +23,7 @@ class Task3 extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return null;
+    return new Task3_State();
   }
 }
 
@@ -31,6 +31,14 @@ class Task3_State extends State<Task3>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return null;
+    return new MaterialApp(
+      title: "Task Type 3",
+      home: new Scaffold(
+        appBar: new AppBar(title: new Text("Task Type 3"),),
+        body: new Container(
+            child: new Text('All tasks will be shown here')
+        ),
+      ),
+    );
   }
 }

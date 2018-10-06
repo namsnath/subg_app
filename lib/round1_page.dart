@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:simple_permissions/simple_permissions.dart';
 import 'package:geolocator/geolocator.dart';
 
+import 'task1_page.dart';
+import 'task2_page.dart';
+import 'task3_page.dart';
+
 class Round1Page extends StatefulWidget {
   static String tag = 'round1-page';
   @override
@@ -112,10 +116,10 @@ class _Round1PageState extends State<Round1Page> {
 
 
       switch(closestStr) {
-        case 'sjt': {posString = "SJT (${currentDistances['sjt']}m away)";} break;
-        case 'tt': {posString = "TT (${currentDistances['tt']}m away)";} break;
-        case 'smv': {posString = "SMV (${currentDistances['smv']}m away)";} break;
-        case 'gdn': {posString = "GDN (${currentDistances['gdn']}m away)";} break;
+        case 'sjt': {posString = "SJT";} break;
+        case 'tt': {posString = "TT";} break;
+        case 'smv': {posString = "SMV";} break;
+        case 'gdn': {posString = "GDN";} break;
         default: posString = "Unknown";
       }
 
@@ -163,6 +167,10 @@ class _Round1PageState extends State<Round1Page> {
               child: Text('Task Type 1'),
 
               onPressed: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Task1_Page(location: posString,)),
+                );
                 //Do Assign Task
               },  //onPressed
             )
@@ -179,7 +187,10 @@ class _Round1PageState extends State<Round1Page> {
               child: Text('Task Type 2'),
 
               onPressed: () async {
-
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Task2_Page(location: posString,)),
+                );
               },  //onPressed
             )
         )
@@ -195,7 +206,10 @@ class _Round1PageState extends State<Round1Page> {
               child: Text('Task Type 3'),
 
               onPressed: () async {
-
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Task3_Page(location: posString,)),
+                );
               },  //onPressed
             )
         )

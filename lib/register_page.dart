@@ -104,7 +104,7 @@ class _RegisterPageState extends State<RegisterPage> {
     var teamID = prefs.getInt('teamID') ?? null;
     print('Team ID: $teamID');
 
-    var url = 'http://104.196.117.29/getNotRegistered';
+    var url = 'http://104.196.117.29/getAll';
     await http.get(url)
         .then((response) async {
       print("Response status: ${response.statusCode}");
@@ -115,7 +115,7 @@ class _RegisterPageState extends State<RegisterPage> {
         content: new Text("Participant Data loaded"),
       ));*/
     });
-
+    //print('response decoded '+regs);
     reglist = regs.map((reg) => (reg['gravitasId'] + " - " + reg['name']).toString()).toList();
     setState(() {
       reglist;

@@ -23,14 +23,23 @@ class Task2 extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return null;
+    return new Task2_State();
   }
 }
 
 class Task2_State extends State<Task2>{
   @override
+  @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return null;
+    return new MaterialApp(
+      title: "Task Type 2",
+      home: new Scaffold(
+        appBar: new AppBar(title: new Text("Task Type 2"),),
+        body: new Container(
+            child: new Text('All tasks will be shown here')
+        ),
+      ),
+    );
   }
 }
