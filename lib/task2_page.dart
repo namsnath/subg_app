@@ -154,9 +154,9 @@ class Task2_State extends State<Task2>{
       await http.post(ongoingURL, body: ongoingBody)
           .then((res) async {
         print('Get Specific Ongoing');
-        print(res.body);
+        //print(res.body);
         var data = await jsonDecode(res.body);
-        print(data.length);
+        //print(data.length);
         if(data.length == 0) {
           var url = "http://104.196.117.29/task/assignTask";
           var body = {
@@ -164,35 +164,35 @@ class Task2_State extends State<Task2>{
             "location":location,
             "teamID": teamID
           };
-          print(body);
+          //print(body);
           await http.post(url,body:body).then((res) async{
             print('Assign Task');
-            print(res.body);
+            //print(res.body);
             data = await jsonDecode(res.body);
-            print(data.length);
+            //print(data.length);
             if(data.reqTask.length == 1) {
-              taskData1 = data[0].reqTask.name + "\n" + data[0].reqTask.description;
+              taskData1 = data[0]['reqTask']['name'] + "\n" + data[0]['reqTask']['description'];
               txt2 = false;
               txt1 = true;
             }
             if(data.reqTask.length == 2) {
-              taskData1 = data[0].reqTask.name + "\n" + data[0].reqTask.description;
-              taskData2 = data[1].reqTask.name + "\n" + data[1].reqTask.description;
+              taskData1 = data[0]['reqTask']['name'] + "\n" + data[0]['reqTask']['description'];
+              taskData2 = data[1]['reqTask']['name'] + "\n" + data[1]['reqTask']['description'];
               txt1 = true;
               txt2 = true;
             }
           });
         }
         else {
-          print(data);
+          //print(data[0]['name']);
           if(data.length == 1) {
-            taskData1 = data[0].name + "\n" + data[0].description;
+            taskData1 = data[0]['name'] + "\n" + data[0]['description'];
             txt2 = false;
             txt1 = true;
           }
           if(data.length == 2) {
-            taskData1 = data[0].name + "\n" + data[0].description;
-            taskData2 = data[1].name + "\n" + data[1].description;
+            taskData1 = data[0]['name'] + "\n" + data[0]['description'];
+            taskData2 = data[1]['name'] + "\n" + data[1]['description'];
             txt1 = true;
             txt2 = true;
           }
@@ -200,8 +200,8 @@ class Task2_State extends State<Task2>{
       });
     }
 
-    print(taskData1);
-    print(taskData2);
+    //print(taskData1);
+    //print(taskData2);
 
     setState(() {
       taskData1;
