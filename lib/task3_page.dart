@@ -14,9 +14,9 @@ import 'package:geolocator/geolocator.dart';
 
 class Task3_Page extends StatelessWidget{
   final String location;
-  final String teamID;
+  String teamID;
 
-  Task3_Page({Key key,   this.location, this.teamID }): super(key:key);
+  Task3_Page({Key key,   this.location}): super(key:key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class Task3_Page extends StatelessWidget{
 }
 
 class Task3 extends StatefulWidget{
-  static final String tag= 'task3_page';
+  static final String tag = 'task3_page';
   final String location;
   Task3({Key key,   this.location }): super(key:key);
   @override
@@ -38,8 +38,12 @@ class Task3 extends StatefulWidget{
 
 class Task3_State extends State<Task3>{
   final String location;
-  var taskData;
+  var taskData1, taskData2, taskData3;
+  String teamID;
   bool visible = false;
+  bool txt1 = false;
+  bool txt2 = false;
+  bool txt3 = false;
   Task3_State({Key key,   this.location }): super();
 
   @override
@@ -49,34 +53,221 @@ class Task3_State extends State<Task3>{
     return new MaterialApp(
         title: "Task Type 3",
         home: new Scaffold(
-          appBar: new AppBar(title: new Text("Task Type 3"),),
-          body: new Container(
-              child: visible?new Text('Your Location'+location)
-                  :new Center(child:new Text("Loading Data"))
+          appBar: new AppBar(title: new Text("Task Type 3"), backgroundColor: Colors.blueAccent[700],),
+          body: new Stack(
+            children: <Widget>[
+              new Container(
+                decoration: new BoxDecoration(
+                    image: new DecorationImage(image: new AssetImage('assets/images/LOcation.png'),
+                      fit: BoxFit.cover,
+                    )
+                ),
+              ),
+              visible ? new Column(
+                children: <Widget>[
+                  new Container(height: 20.0,),
+                  new Center(
+                    child: new Container(
+                      height: 120.0,
+                      width: 380.0,
+                      child:new Container(
+                          decoration: new BoxDecoration(
+                            color: Color.fromRGBO(247, 247, 247, 0.99),
+                            borderRadius: new BorderRadius.only(
+                              topLeft: const Radius.circular(30.0),
+                              topRight: const Radius.circular(30.0),
+                              bottomLeft: const Radius.circular(30.0),
+                              bottomRight: const Radius.circular(30.0),
+                            ),
+                          ),
+                          child:new Center(
+                            child: new Text(
+                              txt1 ? taskData1.toString() : "No Task",
+                              textScaleFactor: 1.5,
+                              textAlign: TextAlign.center,
+                              style: new TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          )
+                      ),
+                    ),
+                  ),
+
+                  new Container(height: 20.0),
+
+                  txt2 ? new Center(
+                    child: new Container(
+                      height: 120.0,
+                      width: 380.0,
+                      child:new Container(
+                          decoration: new BoxDecoration(
+                            color: Color.fromRGBO(247, 247, 247, 0.99),
+                            borderRadius: new BorderRadius.only(
+                              topLeft: const Radius.circular(30.0),
+                              topRight: const Radius.circular(30.0),
+                              bottomLeft: const Radius.circular(30.0),
+                              bottomRight: const Radius.circular(30.0),
+                            ),
+                          ),
+                          child:new Center(
+                            child: new Text(
+                              txt2 ? taskData2.toString() : "No Task",
+                              textScaleFactor: 1.5,
+                              textAlign: TextAlign.center,
+                              style: new TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          )
+                      ),
+                    ),
+                  ) : new Container(),
+
+
+                  new Container(height: 20.0),
+
+                  txt3 ? new Center(
+                    child: new Container(
+                      height: 120.0,
+                      width: 380.0,
+                      child:new Container(
+                          decoration: new BoxDecoration(
+                            color: Color.fromRGBO(247, 247, 247, 0.99),
+                            borderRadius: new BorderRadius.only(
+                              topLeft: const Radius.circular(30.0),
+                              topRight: const Radius.circular(30.0),
+                              bottomLeft: const Radius.circular(30.0),
+                              bottomRight: const Radius.circular(30.0),
+                            ),
+                          ),
+                          child:new Center(
+                            child: new Text(
+                              txt3 ? taskData3.toString() : "No Task",
+                              textScaleFactor: 1.5,
+                              textAlign: TextAlign.center,
+                              style: new TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          )
+                      ),
+                    ),
+                  ) : new Container(),
+
+                ],
+              ) : new Center(child: new Text('Loading Data'))
+            ],
           ),
+          /*body: new Container(
+            child: visible ? new Text(txt1 ? taskData.toString() : "No Tasks")
+                : new Center(child: new Text("Loading Data"))
+        ),*/
+
+
+
         )
     );
   }
 
   void init() async{
-    var url= "http://104.196.117.29/startTask";
-    var body={
-      'teamId': '3',
-      'location':location,
-      'type':'3'
-    };
-    await http.post(url,body:body).then((res) async{
-      print(res.body);
-      taskData= await jsonDecode(res.body);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    teamID = prefs.getString('teamID');
 
-    });
+    if(location == 'Unknown'){
+      taskData1 = "Location Unknown\nNo tasks available";
+      txt1 = true;
+      txt2 = false;
+      txt3 = false;
+    } else {
+      var ongoingURL = 'http://104.196.117.29/task/getSpecificOngoing';
+      var ongoingBody = {
+        'teamID': teamID,
+        'location': location,
+        'type': '3',
+      };
+      await http.post(ongoingURL, body: ongoingBody)
+          .then((res) async {
+        print('Get Specific Ongoing');
+        //print(res.body);
+        var data = await jsonDecode(res.body);
+        print(data);
+        if(data.length == 0) {
+          var url = "http://104.196.117.29/task/assignTask";
+          var body = {
+            "type":"3",
+            "location":location,
+            "teamID": teamID
+          };
+          //print(body);
+          await http.post(url,body:body).then((ares) async{
+            print('Assign Task');
+            //print(res.body);
+            var adata = await jsonDecode(ares.body);
+            print(adata);
+            if(adata['reqTask'].length == 1) {
+              taskData1 = adata[0]['reqTask']['name'] + "\n" + adata[0]['reqTask']['description'];
+              txt1 = true;
+              txt2 = false;
+              txt3 = false;
+            }
+            if(adata['reqTask'].length == 2) {
+              taskData1 = adata['reqTask'][0]['name'] + "\n" + adata['reqTask'][0]['description'];
+              taskData2 = adata['reqTask'][1]['name'] + "\n" + adata['reqTask'][1]['description'];
+              txt1 = true;
+              txt2 = true;
+              txt3 = false;
+            }
+            if(adata['reqTask'].length == 3) {
+              taskData1 = adata['reqTask'][0]['name'] + "\n" + adata['reqTask'][0]['description'];
+              taskData2 = adata['reqTask'][1]['name'] + "\n" + adata['reqTask'][1]['description'];
+              taskData3 = adata['reqTask'][2]['name'] + "\n" + adata['reqTask'][2]['description'];
+              txt1 = true;
+              txt2 = true;
+              txt3 = true;
+            }
+          });
+        }
+        else {
+          //print(data[0]['name']);
+          if(data.length == 1) {
+            taskData1 = data[0]['name'] + "\n" + data[0]['description'];
+            txt1 = true;
+            txt2 = false;
+            txt3 = false;
+          }
+          if(data.length == 2) {
+            taskData1 = data[0]['name'] + "\n" + data[0]['description'];
+            taskData2 = data[1]['name'] + "\n" + data[1]['description'];
+            txt1 = true;
+            txt2 = true;
+            txt3 = false;
+          }
+          if(data.length == 3) {
+            taskData1 = data[0]['name'] + "\n" + data[0]['description'];
+            taskData2 = data[1]['name'] + "\n" + data[1]['description'];
+            taskData3 = data[2]['name'] + "\n" + data[2]['description'];
+            txt1 = true;
+            txt2 = true;
+            txt3 = true;
+          }
+        }
+      });
+    }
+
+    //print(taskData1);
+    //print(taskData2);
 
     setState(() {
-      taskData;
+      taskData1;
+      taskData2;
+      taskData3;
       print("Invoked");
-      visible=true;
+      visible = true;
+      txt1;
+      txt2;
+      txt3;
     });
-
   }
 
   @override

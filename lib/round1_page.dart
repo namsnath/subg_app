@@ -231,7 +231,7 @@ class _Round1PageState extends State<Round1Page> {
               onPressed: (posString == 'Unknown') ? (){} : () async {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Task3_Page(location: posString, teamID: teamID)),
+                  MaterialPageRoute(builder: (context) => Task3_Page(location: posString)),
                 );
               },  //onPressed
             )
