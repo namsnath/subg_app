@@ -10,7 +10,7 @@ import 'task3_page.dart';
 
 class Round1Page extends StatefulWidget {
   String teamID;
-  Round1Page({Key key, @required this.teamID}):super(key:key);
+  Round1Page({Key key, this.teamID}):super(key:key);
   static String tag = 'round1-page';
   @override
   _Round1PageState createState() {
@@ -20,14 +20,15 @@ class Round1Page extends StatefulWidget {
 }
 
 class _Round1PageState extends State<Round1Page> {
-  var map={
+  static const map={
     'SJT':"Current Location-Silver Jubliee Tower",
     'TT':"Current Location-Technology Tower",
     'GDN':"Current Location-GDN",
-    'SMV':"Current Location-SMV"
+    'SMV':"Current Location-SMV",
+    'Unknown':"Unknown"
   };
   String teamID;
-  _Round1PageState({Key key, @required this.teamID}):super();
+  _Round1PageState({Key key,  this.teamID}):super();
   //Essential Variables
   GlobalKey<ScaffoldState> _round1ScaffoldKey = new GlobalKey();
   Permission permission;

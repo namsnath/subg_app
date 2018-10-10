@@ -19,8 +19,7 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _autoValidate = false;
   bool visibilityForm = false;
 
-  var regs;
-  var resp;
+  var resp ="";
   List<dynamic> reglist;
 
   List filter(String filtertext) {
@@ -44,11 +43,11 @@ class _RegisterPageState extends State<RegisterPage> {
       await http.post(url, body: body)
           .then((res) {
             print("Post Successfull"+res.body);
-            resp=res.body;
+            resp=res.body.toString();
 
 
       });
-      Navigator.push(
+      Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => Round1Page(teamID: resp)
           ));
@@ -63,7 +62,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ));*/
     }
   }
-
+  var regs;
 
 
   void init() async {
@@ -192,7 +191,7 @@ class _RegisterPageState extends State<RegisterPage> {
         title: Text('Registration Page'),
       ),
       key: _registerScaffoldKey,
-      body: //visibilityForm?
+      body: visibilityForm?
       new Stack(
         children: <Widget>[
           new Container(
@@ -247,6 +246,8 @@ class _RegisterPageState extends State<RegisterPage> {
             ]
           )
         ]
+      ):new Center(
+        child: new Text("Loading Data"),
       )
     );
   }
