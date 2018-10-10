@@ -19,6 +19,7 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _autoValidate = false;
   bool visibilityForm = false;
 
+
   /*final regs = [
     {
       "registered": false,
@@ -58,7 +59,7 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   ];*/
   var regs;
-
+  var resp;
   List<dynamic> reglist;
 
   List filter(String filtertext) {
@@ -76,15 +77,19 @@ class _RegisterPageState extends State<RegisterPage> {
       var p1Data = p1.split(" - ");
       var p2Data = p2.split(" - ");
 
-      var url = 'http://104.196.117.29/register/new';
-      var body = {'name1': p1Data[1], 'gravitasId1': p1Data[0], 'name2': p2Data[1], 'gravitasId2': p2Data[0]};
+      var url = 'http://104.196.117.29/team/registerTeam';
+      var body = {'name1': p1Data[1], 'gravitasID1': p1Data[0], 'name2': p2Data[1], 'gravitasID2': p2Data[0]};
       print(body);
       await http.post(url, body: body)
           .then((res) {
             print("Post Successfull"+res.body);
-      });
+            resp=res.body;
 
-      Navigator.of(context).pushReplacementNamed(Round1Page.tag);
+      });
+      Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Round1Page(teamID: resp)
+          ));
 
     } else {
       print("Validation error part");
@@ -104,7 +109,7 @@ class _RegisterPageState extends State<RegisterPage> {
     var teamID = prefs.getInt('teamID') ?? null;
     print('Team ID: $teamID');
 
-    var url = 'http://104.196.117.29/getAll';
+    var url = 'http://104.196.117.29/user/getNotRegistered';
     await http.get(url)
         .then((response) async {
       print("Response status: ${response.statusCode}");
@@ -116,7 +121,7 @@ class _RegisterPageState extends State<RegisterPage> {
       ));*/
     });
     //print('response decoded '+regs);
-    reglist = regs.map((reg) => (reg['gravitasId'] + " - " + reg['name']).toString()).toList();
+    reglist = regs.map((reg) => (reg['gravitasID'] + " - " + reg['name']).toString()).toList();
     setState(() {
       reglist;
       visibilityForm = true;
@@ -211,8 +216,10 @@ class _RegisterPageState extends State<RegisterPage> {
           minWidth: 200.0,
           height: 42.0,
           onPressed: submitTeam,
-          color: Theme.of(context).accentColor,
-          child: Text('Log In'),
+          color: Theme.of(context).primaryColor,
+          child: Text('Log In', style: new TextStyle(
+            color: Colors.white,
+          ),),
 
         ),
       )
@@ -223,23 +230,61 @@ class _RegisterPageState extends State<RegisterPage> {
         title: Text('Registration Page'),
       ),
       key: _registerScaffoldKey,
-      body: Center(
-          child: visibilityForm ? Form(
-            key: _formKey,
-            autovalidate: _autoValidate,
-            child: ListView(
-              shrinkWrap: true,
-              padding: EdgeInsets.only(left: 50.0, right: 50.0),
-              children: <Widget>[
-                tatxtParticipant1,
-                SizedBox(height: 18.0),
-                tatxtParticipant2,
-                SizedBox(height: 48.0),
-                btnSubmit,
-              ],
-            )
+      body: //visibilityForm?
+      new Stack(
+        children: <Widget>[
+          new Container(
+            decoration: new BoxDecoration(
+                image: new DecorationImage(image: new AssetImage('assets/images/LandingPage.jpg'),
+                  fit: BoxFit.cover,
+                )
+            ),
+          ),
+          new Column(
+            children: <Widget>[
+              new Container(height: 20.0,),
+              new Text("REGISTER",textScaleFactor: 3.0, style: new TextStyle(
+                color: Colors.white,
+              ),),
+              new Container(height: 30.0,),
+              new Center(
+                child: new Container(
+                  height: 400.0,
+                  width: 270.0,
+
+                  child: new Container(
+                      decoration: new BoxDecoration(
+                          color: Color.fromRGBO(247, 247, 247, 0.99),
+                          borderRadius: new BorderRadius.only(
+                            topLeft: const Radius.circular(30.0),
+                            topRight: const Radius.circular(30.0),
+                            bottomLeft: const Radius.circular(30.0),
+                            bottomRight: const Radius.circular(30.0),
+                          ),
+                    ),
+                    child: new Center(
+                      child: Form(
+                          key: _formKey,
+                          autovalidate: _autoValidate,
+                          child: ListView(
+                            shrinkWrap: true,
+                            padding: EdgeInsets.only(left: 50.0, right: 50.0),
+                            children: <Widget>[
+                              tatxtParticipant1,
+                              SizedBox(height: 18.0),
+                              tatxtParticipant2,
+                              SizedBox(height: 48.0),
+                              btnSubmit,
+                            ],
+                          )
+                      ),
+                    )
+                  ),
+                )
+              )
+            ]
           )
-              : new Text("Loading Data")
+        ]
       )
     );
   }

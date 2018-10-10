@@ -64,3 +64,8 @@ flutter:
     - assets/images/LandingPage.jpg
     - assets/images/LOcation.png
     - assets/images/Task.png
+
+  fonts:
+        - family: Roboto
+          fonts:
+            - asset: assets/fonts/Roboto-Regular.ttf

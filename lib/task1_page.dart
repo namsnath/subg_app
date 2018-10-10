@@ -14,32 +14,34 @@ import 'package:geolocator/geolocator.dart';
 
 class Task1_Page extends StatelessWidget{
   final String location;
-
-  Task1_Page({Key key, @required this.location }): super(key:key);
+  final String teamID;
+  Task1_Page({Key key, @required this.location, @required this.teamID }): super(key:key);
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return new Task1(location: location,);
+    return new Task1(location: location,teamID: teamID,);
   }
 }
 
 class Task1 extends StatefulWidget{
   static final String tag= 'task1_page';
   final String location;
-  Task1({Key key, @required this.location }): super(key:key);
+  final String teamID;
+  Task1({Key key, @required this.location ,@required this.teamID }): super(key:key);
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return new Task1_State(location:location,);
+    return new Task1_State(location:location,teamID: teamID);
   }
 }
 
 class Task1_State extends State<Task1>{
   final String location;
   var taskData;
+  final String teamID;
   bool visible = false;
-  Task1_State({Key key, @required this.location }): super();
+  Task1_State({Key key, @required this.location,@required this.teamID  }): super();
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +60,7 @@ class Task1_State extends State<Task1>{
   }
 
   void init() async{
-    var url= "http://104.196.117.29/startTask";
+    var url= "http://104.196.117.29/task/assignTask";
     var body={
       'teamId': '1',
       'location':location,

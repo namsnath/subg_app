@@ -9,12 +9,19 @@ import 'task2_page.dart';
 import 'task3_page.dart';
 
 class Round1Page extends StatefulWidget {
+  String teamID;
+  Round1Page({Key key, @required this.teamID}):super(key:key);
   static String tag = 'round1-page';
   @override
-  _Round1PageState createState() => new _Round1PageState();
+  _Round1PageState createState() {
+    print("Our teamID is "+teamID);
+    return new _Round1PageState(teamID:teamID);
+  }
 }
 
 class _Round1PageState extends State<Round1Page> {
+  String teamID;
+  _Round1PageState({Key key, @required this.teamID}):super();
   //Essential Variables
   GlobalKey<ScaffoldState> _round1ScaffoldKey = new GlobalKey();
   Permission permission;
@@ -47,11 +54,11 @@ class _Round1PageState extends State<Round1Page> {
   var btnEdgeInsets;
 
   //Dimension Variables
-  final btnTaskHeight = 150.0;
-  final btnRefreshHeight = 42.0;
+  final btnTaskHeight = 380.0;
+  final btnRefreshHeight = 80.0;
 
-  final btnTaskMinWidth = 200.0;
-  final btnRefreshMinWidth = 200.0;
+  final btnTaskMinWidth = 380.0;
+  final btnRefreshMinWidth = 80.0;
 
   _onTimeout() async {
     print("GPS Not Enabled.");
@@ -116,10 +123,10 @@ class _Round1PageState extends State<Round1Page> {
 
 
       switch(closestStr) {
-        case 'sjt': {posString = "SJT";} break;
-        case 'tt': {posString = "TT";} break;
-        case 'smv': {posString = "SMV";} break;
-        case 'gdn': {posString = "GDN";} break;
+        case 'sjt': {posString = "Current Location-Silver Jubliee Tower";} break;
+        case 'tt': {posString = "Current Location-Technology Tower";} break;
+        case 'smv': {posString = "Current Location-SMV";} break;
+        case 'gdn': {posString = "Current Location-GDN";} break;
         default: posString = "Unknown";
       }
 
@@ -161,9 +168,9 @@ class _Round1PageState extends State<Round1Page> {
         padding: btnEdgeInsets,
         child: Material(
             child: MaterialButton(
-              minWidth: btnTaskMinWidth,
-              height: btnTaskHeight,
-              color: btnColor,
+              minWidth: 340.0,
+              height: 70.0,
+              color: Color.fromRGBO(247, 247, 247, 0.99),
               child: Text('Task Type 1'),
 
               onPressed: () async {
@@ -181,9 +188,9 @@ class _Round1PageState extends State<Round1Page> {
         padding: btnEdgeInsets,
         child: Material(
             child: MaterialButton(
-              minWidth: btnTaskMinWidth,
-              height: btnTaskHeight,
-              color: btnColor,
+              minWidth: 340.0,
+              height: 70.0,
+              color: Color.fromRGBO(247, 247, 247, 0.99),
               child: Text('Task Type 2'),
 
               onPressed: () async {
@@ -200,9 +207,9 @@ class _Round1PageState extends State<Round1Page> {
         padding: btnEdgeInsets,
         child: Material(
             child: MaterialButton(
-              minWidth: btnTaskMinWidth,
-              height: btnTaskHeight,
-              color: btnColor,
+              minWidth: 340.0,
+              height: 70.0,
+              color: Color.fromRGBO(247, 247, 247, 0.99),
               child: Text('Task Type 3'),
 
               onPressed: () async {
@@ -215,13 +222,10 @@ class _Round1PageState extends State<Round1Page> {
         )
     );
 
-    final btnRefresh = Padding(
-        padding: btnEdgeInsets,
-        child: Material(
-            child: MaterialButton(
-              minWidth: btnRefreshMinWidth,
-              height: btnRefreshHeight,
-              color: btnColor,
+    final btnRefresh = MaterialButton(
+              minWidth: 320.0,
+              height: 40.0,
+              color: Colors.blue,
               child: Text('Refresh Location'),
 
               onPressed: () async {
@@ -230,29 +234,61 @@ class _Round1PageState extends State<Round1Page> {
                   posString;
                 });
               },  //onPressed
-            )
-        )
-    );
+            );
+
+
 
     //Build UI
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Round 1'),
+        appBar: new AppBar(
+          title: new Text("Round 1!"),
         ),
-        key: _round1ScaffoldKey,
-        body: Center(
-            child: ListView(
-              shrinkWrap: true,
-              padding: EdgeInsets.only(left: 50.0, right: 50.0),
-              children: <Widget>[
-                lblLocation,
-                btnType1,
-                btnType2,
-                btnType3,
-                btnRefresh,
-              ],
-            )
-        )
+      body: new Stack(
+        children: <Widget>[
+          new Container(
+            decoration: new BoxDecoration(
+                image: new DecorationImage(image: new AssetImage('assets/images/LOcation.png'),
+                  fit: BoxFit.cover,
+                )
+            ),
+          ),
+          new Column(
+            children: <Widget>[
+              new Container(height: 20.0,),
+              new Center(
+                child: new Container(
+                  height: 120.0,
+                  width: 380.0,
+                  child:new Container(
+                    decoration: new BoxDecoration(
+                      color: Color.fromRGBO(247, 247, 247, 0.99),
+                      borderRadius: new BorderRadius.only(
+                        topLeft: const Radius.circular(30.0),
+                        topRight: const Radius.circular(30.0),
+                        bottomLeft: const Radius.circular(30.0),
+                        bottomRight: const Radius.circular(30.0),
+                      ),
+                    ),
+                    child:new Center(
+                      child:new Text(posString,textScaleFactor: 1.5, style: new TextStyle(
+                        color: Colors.black,
+                      ),),
+                    )
+                  ),
+                ),
+              ),
+              new Container( height: 20.0,),
+              btnType1,
+              new Container(height: 5.0,),
+              btnType2,
+              new Container(height: 5.0,),
+              btnType3,
+              new Container(height: 50.0,),
+              btnRefresh,
+            ],
+          )
+        ],
+      ),
     );
   }
 }

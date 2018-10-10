@@ -13,7 +13,6 @@ class SUBGApp extends StatelessWidget {
   final routes = <String, WidgetBuilder>{
     RegisterPage.tag: (context) => RegisterPage(),
     HomePage.tag: (context) => HomePage(),
-    Round1Page.tag: (context) => Round1Page(),
   };
 
   @override
@@ -22,9 +21,9 @@ class SUBGApp extends StatelessWidget {
       title: 'SUBG App Thingy',
       theme: ThemeData(
         //primarySwatch: Colors.lightGreen,
-        brightness: Brightness.dark,
-        primaryColor: Colors.amberAccent,
-        accentColor: Colors.amber,
+        brightness: Brightness.light,
+        primaryColor: Colors.blueAccent[700],
+        accentColor: Colors.blue,
       ),
       home: RegisterPage(),
       routes: routes,
