@@ -19,45 +19,6 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _autoValidate = false;
   bool visibilityForm = false;
 
-
-  /*final regs = [
-    {
-      "registered": false,
-      "_id": "5bb06bd98884a4659421cda5",
-      "name": "Namit Nathwani",
-      "email": "namsnath@gmail.com",
-      "phone": "123456789",
-      "gravitasID": "G18I1234",
-      "regNo": "17BCI0113"
-    },
-    {
-      "registered": false,
-      "_id": "5bb06c1e8884a4659421cda6",
-      "name": "Yash Gupta",
-      "email": "abc@gmail.com",
-      "phone": "321654987",
-      "gravitasID": "G18I4321",
-      "regNo": "17BME0532"
-    },
-    {
-      "registered": false,
-      "_id": "5bb06c668884a4659421cda7",
-      "name": "Shovan Singh",
-      "email": "bahdhj@gmail.com",
-      "phone": "798456123",
-      "gravitasID": "G18I4123",
-      "regNo": "17BCE0123"
-    },
-    {
-      "registered": false,
-      "_id": "5bb06c978884a4659421cda8",
-      "name": "Manan Rajvir",
-      "email": "jaksdhjdh@gmail.com",
-      "phone": "456789123",
-      "gravitasID": "G18I4132",
-      "regNo": "17BCE0987"
-    }
-  ];*/
   var regs;
   var resp;
   List<dynamic> reglist;
@@ -84,6 +45,7 @@ class _RegisterPageState extends State<RegisterPage> {
           .then((res) {
             print("Post Successfull"+res.body);
             resp=res.body;
+
 
       });
       Navigator.push(

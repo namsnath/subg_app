@@ -20,6 +20,12 @@ class Round1Page extends StatefulWidget {
 }
 
 class _Round1PageState extends State<Round1Page> {
+  var map={
+    'SJT':"Current Location-Silver Jubliee Tower",
+    'TT':"Current Location-Technology Tower",
+    'GDN':"Current Location-GDN",
+    'SMV':"Current Location-SMV"
+  };
   String teamID;
   _Round1PageState({Key key, @required this.teamID}):super();
   //Essential Variables
@@ -123,10 +129,10 @@ class _Round1PageState extends State<Round1Page> {
 
 
       switch(closestStr) {
-        case 'sjt': {posString = "Current Location-Silver Jubliee Tower";} break;
-        case 'tt': {posString = "Current Location-Technology Tower";} break;
-        case 'smv': {posString = "Current Location-SMV";} break;
-        case 'gdn': {posString = "Current Location-GDN";} break;
+        case 'sjt': {posString = "SJT";} break;
+        case 'tt': {posString = "TT";} break;
+        case 'smv': {posString = "SMV";} break;
+        case 'gdn': {posString = "GDN";} break;
         default: posString = "Unknown";
       }
 
@@ -176,7 +182,7 @@ class _Round1PageState extends State<Round1Page> {
               onPressed: () async {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Task1_Page(location: posString,)),
+                  MaterialPageRoute(builder: (context) => Task1_Page(location: posString,teamID: teamID,)),
                 );
                 //Do Assign Task
               },  //onPressed
@@ -270,7 +276,7 @@ class _Round1PageState extends State<Round1Page> {
                       ),
                     ),
                     child:new Center(
-                      child:new Text(posString,textScaleFactor: 1.5, style: new TextStyle(
+                      child:new Text(map[posString],textScaleFactor: 1.5, style: new TextStyle(
                         color: Colors.black,
                       ),),
                     )

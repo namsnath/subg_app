@@ -52,7 +52,7 @@ class Task1_State extends State<Task1>{
       home: new Scaffold(
         appBar: new AppBar(title: new Text("Task Type 1"),),
         body: new Container(
-            child: visible?new Text('Your Location'+location)
+            child: visible?new Text('Returned data '+taskData.toString())
                 :new Center(child:new Text("Loading Data"))
         ),
       )
@@ -62,10 +62,11 @@ class Task1_State extends State<Task1>{
   void init() async{
     var url= "http://104.196.117.29/task/assignTask";
     var body={
-      'teamId': '1',
-      'location':location,
-      'type':'1'
+    "type":"1",
+    "location":location,
+    "teamID":teamID
     };
+    print(body);
     await http.post(url,body:body).then((res) async{
       print(res.body);
       taskData= await jsonDecode(res.body);
