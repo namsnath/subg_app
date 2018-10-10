@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:simple_permissions/simple_permissions.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'task1_page.dart';
@@ -151,9 +152,15 @@ class _Round1PageState extends State<Round1Page> {
     });
   }
 
+  getTeamID() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    teamID = prefs.getString('teamID');
+  }
+
   @override
   void initState() {
     getLocation();
+    getTeamID();
   }
 
   Widget build(BuildContext context) {
@@ -184,7 +191,7 @@ class _Round1PageState extends State<Round1Page> {
                 //
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Task1_Page(location: posString,teamID: teamID,)),
+                  MaterialPageRoute(builder: (context) => Task1_Page(location: posString, teamID: teamID,)),
                 );
                 //Do Assign Task
               },  //onPressed
@@ -204,7 +211,7 @@ class _Round1PageState extends State<Round1Page> {
               onPressed: () async {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Task2_Page(location: posString,)),
+                  MaterialPageRoute(builder: (context) => Task2_Page(location: posString, teamID: teamID)),
                 );
               },  //onPressed
             )
@@ -223,7 +230,7 @@ class _Round1PageState extends State<Round1Page> {
               onPressed: () async {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Task3_Page(location: posString,)),
+                  MaterialPageRoute(builder: (context) => Task3_Page(location: posString, teamID: teamID)),
                 );
               },  //onPressed
             )
@@ -248,8 +255,9 @@ class _Round1PageState extends State<Round1Page> {
 
     //Build UI
     return Scaffold(
+        key: _round1ScaffoldKey,
         appBar: new AppBar(
-          title: new Text("Round 1!"),
+          title: new Text("Round 1"),
         ),
       body: new Stack(
         children: <Widget>[

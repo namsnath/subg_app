@@ -14,8 +14,9 @@ import 'package:geolocator/geolocator.dart';
 
 class Task3_Page extends StatelessWidget{
   final String location;
+  final String teamID;
 
-  Task3_Page({Key key,   this.location }): super(key:key);
+  Task3_Page({Key key,   this.location, this.teamID }): super(key:key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'register_page.dart';
 import 'home-page.dart';
 import 'round1_page.dart';
@@ -10,13 +11,28 @@ import 'task3_page.dart';
 void main() => runApp(SUBGApp());
 
 class SUBGApp extends StatelessWidget {
+  var page;
+  var teamID = null;
+
   final routes = <String, WidgetBuilder>{
     RegisterPage.tag: (context) => RegisterPage(),
     HomePage.tag: (context) => HomePage(),
   };
 
+  void init() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    teamID = prefs.getString('teamID') ?? null;
+    print('TeamID: $teamID');
+  }
+
+  @override
+  void initState() {
+    init();
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'SUBG App Thingy',
       theme: ThemeData(
@@ -25,7 +41,7 @@ class SUBGApp extends StatelessWidget {
         primaryColor: Colors.blueAccent[700],
         accentColor: Colors.blue,
       ),
-      home: RegisterPage(),
+      home: (teamID == null) ? RegisterPage() : Round1Page(teamID: teamID),
       routes: routes,
     );
   }

@@ -28,6 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   final TextEditingController _typeAheadController1 = TextEditingController();
   final TextEditingController _typeAheadController2 = TextEditingController();
+  final TextEditingController _typeAheadController3 = TextEditingController();
 
   void submitTeam() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -44,10 +45,10 @@ class _RegisterPageState extends State<RegisterPage> {
           .then((res) {
             print("Post Successfull"+res.body);
             resp=res.body.toString();
-
+            prefs.setString('teamID', resp);
 
       });
-      Navigator.pushReplacement(
+      Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => Round1Page(teamID: resp)
           ));
@@ -67,8 +68,16 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void init() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var teamID = prefs.getInt('teamID') ?? null;
+    var teamID = prefs.getString('teamID') ?? null;
     print('Team ID: $teamID');
+
+    if(teamID != null) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Round1Page(teamID: resp)
+          ));
+    }
+
 
     var url = 'http://104.196.117.29/user/getNotRegistered';
     await http.get(url)
@@ -126,7 +135,7 @@ class _RegisterPageState extends State<RegisterPage> {
         }
         else if (!reglist.contains(value))
           return 'Enter valid participant name';
-        else if (value == _typeAheadController2.text)
+        else if (value == _typeAheadController2.text || value == _typeAheadController3.text)
           return 'Both participants cannot be the same';
       },
       onSaved: (value) => p1 = value,
@@ -161,11 +170,47 @@ class _RegisterPageState extends State<RegisterPage> {
         }
         else if (!reglist.contains(value))
           return 'Enter valid participant name';
-        else if (value == _typeAheadController1.text)
+        else if (value == _typeAheadController1.text || value == _typeAheadController3.text)
           return 'Both participants cannot be the same';
       },
       onSaved: (value) => p2 = value,
     );
+
+    final tatxtParticipant3 = TypeAheadFormField(
+      textFieldConfiguration: TextFieldConfiguration(
+          controller: this._typeAheadController3,
+          decoration: InputDecoration(
+            labelText: 'Participant 3 (Optional)',
+            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          )
+      ),
+      debounceDuration: Duration(milliseconds: 100),
+      suggestionsCallback: (pattern) {
+        return filter(pattern);
+      },
+      itemBuilder: (context, suggestion) {
+        return ListTile(
+          title: Text(suggestion),
+        );
+      },
+      transitionBuilder: (context, suggestionsBox, controller) {
+        return suggestionsBox;
+      },
+      onSuggestionSelected: (suggestion) {
+        this._typeAheadController3.text = suggestion;
+      },
+      validator: (value) {
+        /*if (value.length == 0) {
+          return 'Participant name cannot be empty';
+        }*/
+        if (!reglist.contains(value))
+          return 'Enter valid participant name';
+        else if (value == _typeAheadController1.text || value == _typeAheadController2.text)
+          return 'Both participants cannot be the same';
+      },
+      onSaved: (value) => p2 = value,
+    );
+
 
     final btnSubmit = Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
@@ -198,20 +243,24 @@ class _RegisterPageState extends State<RegisterPage> {
             decoration: new BoxDecoration(
                 image: new DecorationImage(image: new AssetImage('assets/images/LandingPage.jpg'),
                   fit: BoxFit.cover,
+                  alignment: Alignment.center,
                 )
             ),
           ),
-          new Column(
+          new ListView(
             children: <Widget>[
-              new Container(height: 20.0,),
-              new Text("REGISTER",textScaleFactor: 3.0, style: new TextStyle(
-                color: Colors.white,
-              ),),
-              new Container(height: 30.0,),
+              //new Container(height: 90.0),
+              /*new Text("Register",textScaleFactor: 3.0,
+                textAlign: TextAlign.center,
+                style: new TextStyle(
+                  color: Colors.white,
+                ),
+              ),*/
+              new Container(height: 30.0),
               new Center(
                 child: new Container(
-                  height: 400.0,
-                  width: 270.0,
+                  height: 500.0,
+                  width: 350.0,
 
                   child: new Container(
                       decoration: new BoxDecoration(
@@ -231,9 +280,19 @@ class _RegisterPageState extends State<RegisterPage> {
                             shrinkWrap: true,
                             padding: EdgeInsets.only(left: 50.0, right: 50.0),
                             children: <Widget>[
+                              SizedBox(height: 18.0),
+                              new Text("Register",textScaleFactor: 3.0,
+                                textAlign: TextAlign.center,
+                                style: new TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              SizedBox(height: 30.0),
                               tatxtParticipant1,
                               SizedBox(height: 18.0),
                               tatxtParticipant2,
+                              SizedBox(height: 18.0),
+                              tatxtParticipant3,
                               SizedBox(height: 48.0),
                               btnSubmit,
                             ],
