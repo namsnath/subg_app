@@ -64,7 +64,7 @@ class Task2_State extends State<Task2>{
                     )
                 ),
               ),
-              new Column(
+              visible ? new Column(
                 children: <Widget>[
                   new Container(height: 20.0,),
                   new Center(
@@ -96,8 +96,8 @@ class Task2_State extends State<Task2>{
                   ),
 
                   new Container(height: 20.0),
-                  txt2 ? new Container() :
-                  new Center(
+
+                  txt2 ? new Center(
                     child: new Container(
                       height: 120.0,
                       width: 380.0,
@@ -123,9 +123,9 @@ class Task2_State extends State<Task2>{
                           )
                       ),
                     ),
-                  ),
+                  ) : new Container(),
                 ],
-              )
+              ) : new Center(child: new Text('Loading Data'))
             ],
           ),
           /*body: new Container(
@@ -208,6 +208,8 @@ class Task2_State extends State<Task2>{
       taskData2;
       print("Invoked");
       visible = true;
+      txt1;
+      txt2;
     });
 
   }
