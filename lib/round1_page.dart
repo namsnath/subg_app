@@ -10,26 +10,26 @@ import 'task2_page.dart';
 import 'task3_page.dart';
 
 class Round1Page extends StatefulWidget {
-  String teamID;
-  Round1Page({Key key, this.teamID}):super(key:key);
   static String tag = 'round1-page';
+  String teamID;
+  Round1Page({Key key}):super(key:key);
   @override
   _Round1PageState createState() {
-    print("Our teamID is "+teamID);
-    return new _Round1PageState(teamID:teamID);
+    //print("Our teamID is "+teamID);
+    return new _Round1PageState();
   }
 }
 
 class _Round1PageState extends State<Round1Page> {
-  static const map={
-    'SJT':"Current Location-Silver Jubliee Tower",
-    'TT':"Current Location-Technology Tower",
-    'GDN':"Current Location-GDN",
-    'SMV':"Current Location-SMV",
-    'Unknown':"Unknown"
+  static const map = {
+    'SJT':"Current Location:\nSJT",
+    'TT':"Current Location:\nTT",
+    'GDN':"Current Location:\nGDN",
+    'SMV':"Current Location:\nSMV",
+    'Unknown':"Current Location:\nUnknown"
   };
   String teamID;
-  _Round1PageState({Key key,  this.teamID}):super();
+  _Round1PageState({Key key}):super();
   //Essential Variables
   GlobalKey<ScaffoldState> _round1ScaffoldKey = new GlobalKey();
   Permission permission;
@@ -187,11 +187,11 @@ class _Round1PageState extends State<Round1Page> {
               color: Color.fromRGBO(247, 247, 247, 0.99),
               child: Text('Task Type 1'),
 
-              onPressed: () async {
+              onPressed: (posString == 'Unknown') ? (){} : () async {
                 //
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Task1_Page(location: posString, teamID: teamID,)),
+                  MaterialPageRoute(builder: (context) => Task1_Page(location: posString)),
                 );
                 //Do Assign Task
               },  //onPressed
@@ -208,7 +208,7 @@ class _Round1PageState extends State<Round1Page> {
               color: Color.fromRGBO(247, 247, 247, 0.99),
               child: Text('Task Type 2'),
 
-              onPressed: () async {
+              onPressed: /*(posString == 'Unknown') ? (){} : */() async {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Task2_Page(location: posString, teamID: teamID)),
@@ -227,7 +227,7 @@ class _Round1PageState extends State<Round1Page> {
               color: Color.fromRGBO(247, 247, 247, 0.99),
               child: Text('Task Type 3'),
 
-              onPressed: () async {
+              onPressed: (posString == 'Unknown') ? (){} : () async {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Task3_Page(location: posString, teamID: teamID)),
@@ -240,8 +240,12 @@ class _Round1PageState extends State<Round1Page> {
     final btnRefresh = MaterialButton(
               minWidth: 320.0,
               height: 40.0,
-              color: Colors.blue,
-              child: Text('Refresh Location'),
+              color: Colors.blueAccent[700],
+              child: Text('Refresh Location',
+                style: new TextStyle(
+                  color: Colors.white,
+                ),
+              ),
 
               onPressed: () async {
                 await getLocation();
@@ -286,9 +290,14 @@ class _Round1PageState extends State<Round1Page> {
                       ),
                     ),
                     child:new Center(
-                      child:new Text(map[posString],textScaleFactor: 1.5, style: new TextStyle(
-                        color: Colors.black,
-                      ),),
+                      child: new Text(
+                        map[posString],
+                        textScaleFactor: 1.5,
+                        textAlign: TextAlign.center,
+                        style: new TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
                     )
                   ),
                 ),

@@ -39,8 +39,12 @@ class Task2 extends StatefulWidget{
 
 class Task2_State extends State<Task2>{
   final String location;
-  var taskData;
+  //var taskData;
+  var taskData1, taskData2;
+  String teamID;
   bool visible = false;
+  bool txt1 = false;
+  bool txt2 = false;
   Task2_State({Key key,   this.location }): super();
 
   @override
@@ -50,32 +54,160 @@ class Task2_State extends State<Task2>{
     return new MaterialApp(
         title: "Task Type 2",
         home: new Scaffold(
-          appBar: new AppBar(title: new Text("Task Type 2"),),
-          body: new Container(
-              child: visible?new Text('Your Location'+location)
-                  :new Center(child:new Text("Loading Data"))
+          appBar: new AppBar(title: new Text("Task Type 1"), backgroundColor: Colors.blueAccent[700],),
+          body: new Stack(
+            children: <Widget>[
+              new Container(
+                decoration: new BoxDecoration(
+                    image: new DecorationImage(image: new AssetImage('assets/images/LOcation.png'),
+                      fit: BoxFit.cover,
+                    )
+                ),
+              ),
+              new Column(
+                children: <Widget>[
+                  new Container(height: 20.0,),
+                  new Center(
+                    child: new Container(
+                      height: 120.0,
+                      width: 380.0,
+                      child:new Container(
+                          decoration: new BoxDecoration(
+                            color: Color.fromRGBO(247, 247, 247, 0.99),
+                            borderRadius: new BorderRadius.only(
+                              topLeft: const Radius.circular(30.0),
+                              topRight: const Radius.circular(30.0),
+                              bottomLeft: const Radius.circular(30.0),
+                              bottomRight: const Radius.circular(30.0),
+                            ),
+                          ),
+                          child:new Center(
+                            child: new Text(
+                              txt1 ? taskData1.toString() : "No Task",
+                              textScaleFactor: 1.5,
+                              textAlign: TextAlign.center,
+                              style: new TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          )
+                      ),
+                    ),
+                  ),
+
+                  new Container(height: 20.0),
+                  txt2 ? new Container() :
+                  new Center(
+                    child: new Container(
+                      height: 120.0,
+                      width: 380.0,
+                      child:new Container(
+                          decoration: new BoxDecoration(
+                            color: Color.fromRGBO(247, 247, 247, 0.99),
+                            borderRadius: new BorderRadius.only(
+                              topLeft: const Radius.circular(30.0),
+                              topRight: const Radius.circular(30.0),
+                              bottomLeft: const Radius.circular(30.0),
+                              bottomRight: const Radius.circular(30.0),
+                            ),
+                          ),
+                          child:new Center(
+                            child: new Text(
+                              txt2 ? taskData2.toString() : "No Task",
+                              textScaleFactor: 1.5,
+                              textAlign: TextAlign.center,
+                              style: new TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          )
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ],
           ),
+          /*body: new Container(
+            child: visible ? new Text(txt1 ? taskData.toString() : "No Tasks")
+                : new Center(child: new Text("Loading Data"))
+        ),*/
         )
     );
   }
 
   void init() async{
-    var url= "http://104.196.117.29/startTask";
-    var body={
-      'teamId': '2',
-      'location':location,
-      'type':'2'
-    };
-    await http.post(url,body:body).then((res) async{
-      print(res.body);
-      taskData= await jsonDecode(res.body);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    teamID = prefs.getString('teamID');
 
-    });
+    if(location == 'Unknown'){
+      taskData1 = "Location Unknown\nNo tasks available";
+      txt1 = true;
+      txt2 = false;
+    } else {
+      var ongoingURL = 'http://104.196.117.29/task/getSpecificOngoing';
+      var ongoingBody = {
+        'teamID': teamID,
+        'location': location,
+        'type': '2',
+      };
+      await http.post(ongoingURL, body: ongoingBody)
+          .then((res) async {
+        print('Get Specific Ongoing');
+        print(res.body);
+        var data = await jsonDecode(res.body);
+        print(data.length);
+        if(data.length == 0) {
+          var url = "http://104.196.117.29/task/assignTask";
+          var body = {
+            "type":"2",
+            "location":location,
+            "teamID": teamID
+          };
+          print(body);
+          await http.post(url,body:body).then((res) async{
+            print('Assign Task');
+            print(res.body);
+            data = await jsonDecode(res.body);
+            print(data.length);
+            if(data.reqTask.length == 1) {
+              taskData1 = data[0].reqTask.name + "\n" + data[0].reqTask.description;
+              txt2 = false;
+              txt1 = true;
+            }
+            if(data.reqTask.length == 2) {
+              taskData1 = data[0].reqTask.name + "\n" + data[0].reqTask.description;
+              taskData2 = data[1].reqTask.name + "\n" + data[1].reqTask.description;
+              txt1 = true;
+              txt2 = true;
+            }
+          });
+        }
+        else {
+          print(data);
+          if(data.length == 1) {
+            taskData1 = data[0].name + "\n" + data[0].description;
+            txt2 = false;
+            txt1 = true;
+          }
+          if(data.length == 2) {
+            taskData1 = data[0].name + "\n" + data[0].description;
+            taskData2 = data[1].name + "\n" + data[1].description;
+            txt1 = true;
+            txt2 = true;
+          }
+        }
+      });
+    }
+
+    print(taskData1);
+    print(taskData2);
 
     setState(() {
-      taskData;
+      taskData1;
+      taskData2;
       print("Invoked");
-      visible=true;
+      visible = true;
     });
 
   }

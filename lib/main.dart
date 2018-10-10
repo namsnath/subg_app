@@ -17,6 +17,8 @@ class SUBGApp extends StatelessWidget {
   final routes = <String, WidgetBuilder>{
     RegisterPage.tag: (context) => RegisterPage(),
     HomePage.tag: (context) => HomePage(),
+    Round1Page.tag: (context) => Round1Page(),
+
   };
 
   void init() async {
@@ -41,7 +43,7 @@ class SUBGApp extends StatelessWidget {
         primaryColor: Colors.blueAccent[700],
         accentColor: Colors.blue,
       ),
-      home: (teamID == null) ? RegisterPage() : Round1Page(teamID: teamID),
+      home: (teamID == null) ? RegisterPage() : Round1Page(),
       routes: routes,
     );
   }

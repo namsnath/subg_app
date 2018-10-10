@@ -15,7 +15,7 @@ class _RegisterPageState extends State<RegisterPage> {
   GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _registerScaffoldKey = new GlobalKey();
 
-  String p1, p2;
+  String p1, p2, p3;
   bool _autoValidate = false;
   bool visibilityForm = false;
 
@@ -31,6 +31,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _typeAheadController3 = TextEditingController();
 
   void submitTeam() async {
+    var p3Data, name3, gravitasID3, body;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (_formKey.currentState.validate()) {
       // No any error in validation
@@ -38,8 +39,20 @@ class _RegisterPageState extends State<RegisterPage> {
       var p1Data = p1.split(" - ");
       var p2Data = p2.split(" - ");
 
+      if(p3 != "") {
+        p3Data = p3.split(" - ");
+        name3 = p3Data[0];
+        gravitasID3 = p3Data[1];
+      }
+
       var url = 'http://104.196.117.29/team/registerTeam';
-      var body = {'name1': p1Data[1], 'gravitasID1': p1Data[0], 'name2': p2Data[1], 'gravitasID2': p2Data[0]};
+
+      if(p3 != "") {
+        body = {'name1': p1Data[1], 'gravitasID1': p1Data[0],
+          'name2': p2Data[1], 'gravitasID2': p2Data[0],
+          'name3': name3, 'gravitasID3': gravitasID3};
+      } else
+        body = {'name1': p1Data[1], 'gravitasID1': p1Data[0], 'name2': p2Data[1], 'gravitasID2': p2Data[0]};
       print(body);
       await http.post(url, body: body)
           .then((res) {
@@ -48,10 +61,7 @@ class _RegisterPageState extends State<RegisterPage> {
             prefs.setString('teamID', resp);
 
       });
-      Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Round1Page(teamID: resp)
-          ));
+      Navigator.of(context).pushReplacementNamed(Round1Page.tag);
 
     } else {
       print("Validation error part");
@@ -71,31 +81,26 @@ class _RegisterPageState extends State<RegisterPage> {
     var teamID = prefs.getString('teamID') ?? null;
     print('Team ID: $teamID');
 
-    if(teamID != null) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Round1Page(teamID: resp)
-          ));
-    }
+    if(teamID == null) {
+      var url = 'http://104.196.117.29/user/getNotRegistered';
+      await http.get(url)
+          .then((response) async {
+        print("Response status: ${response.statusCode}");
+        print("Response body: ${response.body}");
+        regs = await jsonDecode(response.body);
 
-
-    var url = 'http://104.196.117.29/user/getNotRegistered';
-    await http.get(url)
-        .then((response) async {
-      print("Response status: ${response.statusCode}");
-      print("Response body: ${response.body}");
-      regs = await jsonDecode(response.body);
-
-      /*_registerScaffoldKey.currentState.showSnackBar(new SnackBar(
+        /*_registerScaffoldKey.currentState.showSnackBar(new SnackBar(
         content: new Text("Participant Data loaded"),
       ));*/
-    });
-    //print('response decoded '+regs);
-    reglist = regs.map((reg) => (reg['gravitasID'] + " - " + reg['name']).toString()).toList();
-    setState(() {
-      reglist;
-      visibilityForm = true;
-    });
+      });
+      //print('response decoded '+regs);
+      reglist = regs.map((reg) => (reg['gravitasID'] + " - " + reg['name']).toString()).toList();
+      setState(() {
+        reglist;
+        visibilityForm = true;
+      });
+    } else
+      Navigator.of(context).pushReplacementNamed(Round1Page.tag);
   }
 
   @override
@@ -208,7 +213,7 @@ class _RegisterPageState extends State<RegisterPage> {
         else if (value == _typeAheadController1.text || value == _typeAheadController2.text)
           return 'Both participants cannot be the same';
       },
-      onSaved: (value) => p2 = value,
+      onSaved: (value) => p3 = value,
     );
 
 
