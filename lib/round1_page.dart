@@ -155,6 +155,7 @@ class _Round1PageState extends State<Round1Page> {
   getTeamID() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     teamID = prefs.getString('teamID');
+    //teamID = teamID.substring(1, teamID.length - 1);
     print(teamID);
   }
 

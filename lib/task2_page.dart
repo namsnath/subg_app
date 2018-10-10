@@ -139,6 +139,7 @@ class Task2_State extends State<Task2>{
   void init() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     teamID = prefs.getString('teamID');
+    //teamID = teamID.substring(1, teamID.length - 1);
 
     if(location == 'Unknown'){
       taskData1 = "Location Unknown\nNo tasks available";

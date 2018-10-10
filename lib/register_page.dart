@@ -56,8 +56,9 @@ class _RegisterPageState extends State<RegisterPage> {
       print(body);
       await http.post(url, body: body)
           .then((res) {
-            print("Post Successfull"+res.body);
+            print("Post Successfull" + res.body);
             resp=res.body.toString();
+            resp = resp.substring(1, resp.length - 1);
             prefs.setString('teamID', resp);
 
       });
@@ -79,6 +80,8 @@ class _RegisterPageState extends State<RegisterPage> {
   void init() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var teamID = prefs.getString('teamID') ?? null;
+    if(teamID != null)
+      teamID = teamID.substring(1, teamID.length - 1);
     print('Team ID: $teamID');
 
     if(teamID == null) {
