@@ -54,7 +54,7 @@ class Task2_State extends State<Task2>{
     return new MaterialApp(
         title: "Task Type 2",
         home: new Scaffold(
-          appBar: new AppBar(title: new Text("Task Type 1"), backgroundColor: Colors.blueAccent[700],),
+          appBar: new AppBar(title: new Text("Task Type 2"), backgroundColor: Colors.blueAccent[700],),
           body: new Stack(
             children: <Widget>[
               new Container(
@@ -156,7 +156,7 @@ class Task2_State extends State<Task2>{
         print('Get Specific Ongoing');
         //print(res.body);
         var data = await jsonDecode(res.body);
-        //print(data.length);
+        print(data);
         if(data.length == 0) {
           var url = "http://104.196.117.29/task/assignTask";
           var body = {
@@ -165,19 +165,19 @@ class Task2_State extends State<Task2>{
             "teamID": teamID
           };
           //print(body);
-          await http.post(url,body:body).then((res) async{
+          await http.post(url,body:body).then((ares) async{
             print('Assign Task');
             //print(res.body);
-            data = await jsonDecode(res.body);
-            //print(data.length);
-            if(data.reqTask.length == 1) {
-              taskData1 = data[0]['reqTask']['name'] + "\n" + data[0]['reqTask']['description'];
+            var adata = await jsonDecode(ares.body);
+            print(adata);
+            if(adata['reqTask'].length == 1) {
+              taskData1 = adata[0]['reqTask']['name'] + "\n" + adata[0]['reqTask']['description'];
               txt2 = false;
               txt1 = true;
             }
-            if(data.reqTask.length == 2) {
-              taskData1 = data[0]['reqTask']['name'] + "\n" + data[0]['reqTask']['description'];
-              taskData2 = data[1]['reqTask']['name'] + "\n" + data[1]['reqTask']['description'];
+            if(adata['reqTask'].length == 2) {
+              taskData1 = adata['reqTask'][0]['name'] + "\n" + adata['reqTask'][0]['description'];
+              taskData2 = adata['reqTask'][1]['name'] + "\n" + adata['reqTask'][1]['description'];
               txt1 = true;
               txt2 = true;
             }
