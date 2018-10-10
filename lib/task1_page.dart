@@ -61,7 +61,7 @@ class Task1_State extends State<Task1>{
                   )
               ),
             ),
-            new Column(
+            visible ? new Column(
               children: <Widget>[
                 new Container(height: 20.0,),
                 new Center(
@@ -92,7 +92,7 @@ class Task1_State extends State<Task1>{
                   ),
                 ),
               ],
-            )
+            ): new Center(child: new Text('Loading Data'))
           ],
         ),
         /*body: new Container(
@@ -131,17 +131,17 @@ class Task1_State extends State<Task1>{
             "teamID": teamID
           };
           print(body);
-          await http.post(url,body:body).then((res) async{
+          await http.post(url,body:body).then((ares) async{
             print('Assign Task');
-            print(res.body);
-            data = await jsonDecode(res.body);
-            taskData = data[0].name + "\n" + data[0].description;
+            print(ares.body);
+            var adata = await jsonDecode(ares.body);
+            taskData = adata['reqTask'][0]['name'] + "\n" + adata['reqTask'][0]['description'];
             txt1 = true;
           });
         }
         else {
           txt1 = true;
-          taskData = data[0].name + "\n" + data[0].description;
+          taskData = data[0]['name'] + "\n" + data[0]['description'];
         }
       });
     }
@@ -152,6 +152,7 @@ class Task1_State extends State<Task1>{
       taskData;
       print("Invoked");
       visible = true;
+      txt1;
     });
 
   }

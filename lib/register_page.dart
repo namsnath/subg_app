@@ -18,6 +18,7 @@ class _RegisterPageState extends State<RegisterPage> {
   String p1, p2, p3;
   bool _autoValidate = false;
   bool visibilityForm = false;
+  bool btnEnable = true;
 
   var resp ="";
   List<dynamic> reglist;
@@ -31,6 +32,10 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _typeAheadController3 = TextEditingController();
 
   void submitTeam() async {
+    setState(() {
+      btnEnable = false;
+    });
+
     var p3Data, name3, gravitasID3, body;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (_formKey.currentState.validate()) {
@@ -41,8 +46,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
       if(p3 != "") {
         p3Data = p3.split(" - ");
-        name3 = p3Data[0];
-        gravitasID3 = p3Data[1];
+        name3 = p3Data[1];
+        gravitasID3 = p3Data[0];
       }
 
       var url = 'http://104.196.117.29/team/registerTeam';
@@ -59,10 +64,18 @@ class _RegisterPageState extends State<RegisterPage> {
             print("Post Successfull" + res.body);
             resp=res.body.toString();
             resp = resp.substring(1, resp.length - 1);
-            prefs.setString('teamID', resp);
-
+            if(resp.length == 24) {
+              prefs.setString('teamID', resp);
+              Navigator.of(context).pushReplacementNamed(Round1Page.tag);
+            } else {
+              _registerScaffoldKey.currentState.showSnackBar(new SnackBar(
+                content: new Text("Some error Occured"),
+              ));
+              setState(() {
+                btnEnable = true;
+              });
+            }
       });
-      Navigator.of(context).pushReplacementNamed(Round1Page.tag);
 
     } else {
       print("Validation error part");
@@ -229,9 +242,9 @@ class _RegisterPageState extends State<RegisterPage> {
         child: MaterialButton(
           minWidth: 200.0,
           height: 42.0,
-          onPressed: submitTeam,
+          onPressed: btnEnable? submitTeam: (){},
           color: Theme.of(context).primaryColor,
-          child: Text('Log In', style: new TextStyle(
+          child: Text(btnEnable ? 'Log In': 'Working...', style: new TextStyle(
             color: Colors.white,
           ),),
 
