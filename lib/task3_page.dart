@@ -61,7 +61,8 @@ class Task3_State extends State<Task3>{
                     )
                 ),
               ),
-              visible ? new Column(
+              visible ? new SingleChildScrollView(
+                child: new Column(
                 children: <Widget>[
                   new Container(height: 20.0,),
                   new Center(
@@ -154,6 +155,7 @@ class Task3_State extends State<Task3>{
                   ) : new Container(),
 
                 ],
+              )
               ) : new Center(child: new Text('Loading Data'))
             ],
           ),

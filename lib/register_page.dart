@@ -253,14 +253,15 @@ class _RegisterPageState extends State<RegisterPage> {
     );
 
     return Scaffold(
-      appBar: AppBar(
+      /*appBar: AppBar(
         title: Text('Registration Page'),
-      ),
+      ),*/
       resizeToAvoidBottomPadding: false,
       key: _registerScaffoldKey,
       body: visibilityForm?
       new Stack(
         children: <Widget>[
+
           new Container(
             decoration: new BoxDecoration(
                 image: new DecorationImage(image: new AssetImage('assets/images/LandingPage.jpg'),
@@ -269,7 +270,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 )
             ),
           ),
-          new ListView(
+          new SingleChildScrollView(
+            child: new Column(
             //width: 100.0,
             children: <Widget>[
               //new Container(height: 90.0),
@@ -279,7 +281,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   color: Colors.white,
                 ),
               ),*/
-              new Container(height: 30.0),
+              new Container(height: 100.0),
+
               new Center(
                 child: new Container(
                   height: 500.0,
@@ -326,6 +329,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 )
               )
             ]
+          )
           )
         ]
       ):new Center(

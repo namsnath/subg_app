@@ -59,7 +59,8 @@ class Task1_State extends State<Task1>{
                   )
               ),
             ),
-            visible ? new Column(
+            visible ? new SingleChildScrollView(
+              child: new Column(
               children: <Widget>[
                 new Container(height: 20.0,),
                 new Center(
@@ -90,8 +91,8 @@ class Task1_State extends State<Task1>{
                   ),
                 ),
               ],
-            ): new Center(child: new Text('Loading Data'))
-          ],
+            )
+            ): new Center(child: new Text('Loading Data'))],
         ),
         /*body: new Container(
             child: visible ? new Text(txt1 ? taskData.toString() : "No Tasks")

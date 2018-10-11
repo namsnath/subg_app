@@ -212,6 +212,10 @@ class _Round1PageState extends State<Round1Page> {
   }
 
   Widget build(BuildContext context) {
+    /*SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);*/
     _Round1PageState.ctxt = context;
     this.btnColor = Theme.of(context).accentColor;
     this.btnEdgeInsets = EdgeInsets.symmetric(vertical: 16.0);
@@ -323,8 +327,8 @@ class _Round1PageState extends State<Round1Page> {
             ),
           ),
 
-
-            new Column(
+          SingleChildScrollView(
+              child: new Column(
             //shrinkWrap: true,
             children: <Widget>[
               new Container(height: 20.0,),
@@ -333,25 +337,25 @@ class _Round1PageState extends State<Round1Page> {
                   height: 120.0,
                   width: 380.0,
                   child:new Container(
-                    decoration: new BoxDecoration(
-                      color: Color.fromRGBO(247, 247, 247, 0.99),
-                      borderRadius: new BorderRadius.only(
-                        topLeft: const Radius.circular(30.0),
-                        topRight: const Radius.circular(30.0),
-                        bottomLeft: const Radius.circular(30.0),
-                        bottomRight: const Radius.circular(30.0),
-                      ),
-                    ),
-                    child:new Center(
-                      child: new Text(
-                        map[posString],
-                        textScaleFactor: 1.5,
-                        textAlign: TextAlign.center,
-                        style: new TextStyle(
-                          color: Colors.black,
+                      decoration: new BoxDecoration(
+                        color: Color.fromRGBO(247, 247, 247, 0.99),
+                        borderRadius: new BorderRadius.only(
+                          topLeft: const Radius.circular(30.0),
+                          topRight: const Radius.circular(30.0),
+                          bottomLeft: const Radius.circular(30.0),
+                          bottomRight: const Radius.circular(30.0),
                         ),
                       ),
-                    )
+                      child:new Center(
+                        child: new Text(
+                          map[posString],
+                          textScaleFactor: 1.5,
+                          textAlign: TextAlign.center,
+                          style: new TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      )
                   ),
                 ),
               ),
@@ -398,6 +402,8 @@ class _Round1PageState extends State<Round1Page> {
               )//: new Center(child: new Text('Loading Data'))
             ],
           )
+          )
+
           ],
       ),
     );
