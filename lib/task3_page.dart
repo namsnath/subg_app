@@ -73,10 +73,10 @@ class Task3_State extends State<Task3>{
               visible ? new SingleChildScrollView(
                 child: new Column(
                 children: <Widget>[
-                  new Container(height: 150.0,),
-                  new Center(
+                  new Container(height: 90.0,),
+                  new SingleChildScrollView(child: new Center(
                     child: new Container(
-                      height: 120.0,
+                      height: 200.0,
                       width: 380.0,
                       child:new Container(
                           decoration: new BoxDecoration(
@@ -88,25 +88,25 @@ class Task3_State extends State<Task3>{
                               bottomRight: const Radius.circular(30.0),
                             ),
                           ),
-                          child:new Center(
-                            child: new Text(
+                          child:new Center( child: new Padding(padding: new EdgeInsets.all(8.0),
+                            child: new SingleChildScrollView( child: new Text(
                               txt1 ? taskData1.toString() : "No Task",
                               textScaleFactor: 1.5,
                               textAlign: TextAlign.center,
                               style: new TextStyle(
                                 color: Colors.black,
                               ),
-                            ),
-                          )
+                            )),
+                          ))
                       ),
                     ),
-                  ),
+                  )),
 
                   new Container(height: 20.0),
 
-                  txt2 ? new Center(
+                  txt2 ? new SingleChildScrollView(child: new Center(
                     child: new Container(
-                      height: 120.0,
+                      height: 200.0,
                       width: 380.0,
                       child:new Container(
                           decoration: new BoxDecoration(
@@ -118,26 +118,26 @@ class Task3_State extends State<Task3>{
                               bottomRight: const Radius.circular(30.0),
                             ),
                           ),
-                          child:new Center(
-                            child: new Text(
+                          child:new Center( child: new Padding(padding: new EdgeInsets.all(8.0),
+                            child: new SingleChildScrollView( child:new Text(
                               txt2 ? taskData2.toString() : "No Task",
                               textScaleFactor: 1.5,
                               textAlign: TextAlign.center,
                               style: new TextStyle(
                                 color: Colors.black,
                               ),
-                            ),
+                            ) ),
                           )
                       ),
-                    ),
-                  ) : new Container(),
+                      )),
+                  )) : new Container(),
 
 
                   new Container(height: 20.0),
 
                   txt3 ? new Center(
                     child: new Container(
-                      height: 120.0,
+                      height: 200.0,
                       width: 380.0,
                       child:new Container(
                           decoration: new BoxDecoration(
@@ -149,21 +149,21 @@ class Task3_State extends State<Task3>{
                               bottomRight: const Radius.circular(30.0),
                             ),
                           ),
-                          child:new Center(
-                            child: new Text(
+                          child:new Center( child: new Padding(padding: new EdgeInsets.all(8.0),
+                            child: new SingleChildScrollView( child:new Text(
                               txt3 ? taskData3.toString() : "No Task",
                               textScaleFactor: 1.5,
                               textAlign: TextAlign.center,
                               style: new TextStyle(
                                 color: Colors.black,
                               ),
-                            ),
+                            )),
                           )
-                      ),
+                          )),
                     ),
                   ) : new Container(),
 
-                ],
+              ],
               )
               ) : new Center(child: new Text('Loading Data'))
             ],

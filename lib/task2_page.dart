@@ -74,10 +74,10 @@ class Task2_State extends State<Task2>{
               visible ? new SingleChildScrollView(
                 child: new Column(
                 children: <Widget>[
-                  new Container(height: 150.0,),
+                  new Container(height: 90.0,),
                   new Center(
                     child: new Container(
-                      height: 120.0,
+                      height: 200.0,
                       width: 380.0,
                       child:new Container(
                           decoration: new BoxDecoration(
@@ -89,17 +89,17 @@ class Task2_State extends State<Task2>{
                               bottomRight: const Radius.circular(30.0),
                             ),
                           ),
-                          child:new Center(
-                            child: new Text(
+                          child:new Center( child: new Padding(padding: new EdgeInsets.all(8.0),
+                            child: new SingleChildScrollView( child: new Text(
                               txt1 ? taskData1.toString() : "No Task",
                               textScaleFactor: 1.5,
                               textAlign: TextAlign.center,
                               style: new TextStyle(
                                 color: Colors.black,
                               ),
-                            ),
+                            )),
                           )
-                      ),
+                      )),
                     ),
                   ),
 
@@ -107,7 +107,7 @@ class Task2_State extends State<Task2>{
 
                   txt2 ? new Center(
                     child: new Container(
-                      height: 120.0,
+                      height: 200.0,
                       width: 380.0,
                       child:new Container(
                           decoration: new BoxDecoration(
@@ -119,17 +119,17 @@ class Task2_State extends State<Task2>{
                               bottomRight: const Radius.circular(30.0),
                             ),
                           ),
-                          child:new Center(
-                            child: new Text(
+                          child:new Center( child: new Padding(padding: new EdgeInsets.all(8.0),
+                            child: new SingleChildScrollView( child:new Text(
                               txt2 ? taskData2.toString() : "No Task",
                               textScaleFactor: 1.5,
                               textAlign: TextAlign.center,
                               style: new TextStyle(
                                 color: Colors.black,
                               ),
-                            ),
+                            )),
                           )
-                      ),
+                          )),
                     ),
                   ) : new Container(),
                 ],
