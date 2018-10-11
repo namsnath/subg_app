@@ -61,6 +61,15 @@ class Task3_State extends State<Task3>{
                     )
                 ),
               ),
+
+              new Container(
+                decoration: new BoxDecoration(
+                    image: new DecorationImage(image: new AssetImage('assets/images/SUBG_background.png'),
+                      fit: BoxFit.cover,
+                    )
+                ),
+              ),
+
               visible ? new SingleChildScrollView(
                 child: new Column(
                 children: <Widget>[

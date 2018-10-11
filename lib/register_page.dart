@@ -258,13 +258,22 @@ class _RegisterPageState extends State<RegisterPage> {
       ),*/
       resizeToAvoidBottomPadding: false,
       key: _registerScaffoldKey,
-      body: visibilityForm?
+      body: visibilityForm ?
       new Stack(
         children: <Widget>[
 
           new Container(
             decoration: new BoxDecoration(
                 image: new DecorationImage(image: new AssetImage('assets/images/LandingPage.jpg'),
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                )
+            ),
+          ),
+
+          new Container(
+            decoration: new BoxDecoration(
+                image: new DecorationImage(image: new AssetImage('assets/images/LoginCSI.png'),
                   fit: BoxFit.cover,
                   alignment: Alignment.center,
                 )
@@ -332,9 +341,15 @@ class _RegisterPageState extends State<RegisterPage> {
           )
           )
         ]
-      ):new Center(
-        child: new Text("Loading Data"),
-      )
-    );
+      ) : new Container(
+        decoration: new BoxDecoration(
+            image: new DecorationImage(
+              image: new AssetImage('assets/images/Splash.png'),
+              fit: BoxFit.cover,
+              alignment: Alignment.center,
+            )
+        ),
+      ),
+      );
   }
 }

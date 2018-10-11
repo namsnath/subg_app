@@ -327,6 +327,14 @@ class _Round1PageState extends State<Round1Page> {
             ),
           ),
 
+          new Container(
+            decoration: new BoxDecoration(
+                image: new DecorationImage(image: new AssetImage('assets/images/SUBG_background.png'),
+                  fit: BoxFit.cover,
+                )
+            ),
+          ),
+
           SingleChildScrollView(
               child: new Column(
             //shrinkWrap: true,
