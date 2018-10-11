@@ -71,7 +71,7 @@ class Task1_State extends State<Task1>{
             visible ? new SingleChildScrollView(
               child: new Column(
               children: <Widget>[
-                new Container(height: 20.0,),
+                new Container(height: 150.0,),
                 new Center(
                   child: new Container(
                     height: 120.0,
