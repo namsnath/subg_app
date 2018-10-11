@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:simple_permissions/simple_permissions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import 'task1_page.dart';
 import 'task2_page.dart';
@@ -21,6 +23,14 @@ class Round1Page extends StatefulWidget {
 }
 
 class _Round1PageState extends State<Round1Page> {
+  bool txt1 = false;
+  bool visible = false;
+  static String teamID;
+  static String points;
+  String teamStr = 'Team ID: $teamID';
+  String pointStr = 'Points: $points';
+
+
   static const map = {
     'SJT':"Current Location:\nSJT",
     'TT':"Current Location:\nTT",
@@ -28,7 +38,7 @@ class _Round1PageState extends State<Round1Page> {
     'SMV':"Current Location:\nSMV",
     'Unknown':"Current Location:\nUnknown"
   };
-  String teamID;
+
   _Round1PageState({Key key}):super();
   //Essential Variables
   GlobalKey<ScaffoldState> _round1ScaffoldKey = new GlobalKey();
@@ -157,12 +167,48 @@ class _Round1PageState extends State<Round1Page> {
     teamID = prefs.getString('teamID');
     //teamID = teamID.substring(1, teamID.length - 1);
     print(teamID);
+    setState(){
+      teamID;
+    }
+  }
+
+  getPoints() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    teamID = prefs.getString('teamID');
+    print(teamID);
+    var teamIDSplit = teamID.substring(0, teamID.length - 6) + ' ' + teamID.substring(teamID.length - 6);
+
+    var url = 'http://104.196.117.29/task/countPoints';
+    var body = {'teamID': teamID};
+
+    await http.post(url, body: body).then((res) async {
+      var data = await jsonDecode(res.body);
+      print(data);
+      if(data.length == 0)
+        points = '0';
+      else {
+        data = data[0];
+        points = data['totalPoints'];
+      }
+      print(points);
+    });
+
+    setState(() {
+      teamID;
+      points;
+      teamStr = 'Team ID: \n$teamIDSplit';
+      pointStr = '\nPoints: $points';
+      visible = true;
+      txt1 = true;
+    });
+
   }
 
   @override
   void initState() {
     getLocation();
-    getTeamID();
+    //getTeamID();
+    getPoints();
   }
 
   Widget build(BuildContext context) {
@@ -312,6 +358,39 @@ class _Round1PageState extends State<Round1Page> {
               btnType3,
               new Container(height: 50.0,),
               btnRefresh,
+              new Container(height: 20.0,),
+              /*visible ? */new Column(
+                children: <Widget>[
+                  new Container(height: 20.0,),
+                  new Center(
+                    child: new Container(
+                      height: 150.0,
+                      width: 380.0,
+                      child:new Container(
+                          decoration: new BoxDecoration(
+                            color: Color.fromRGBO(247, 247, 247, 0.99),
+                            borderRadius: new BorderRadius.only(
+                              topLeft: const Radius.circular(30.0),
+                              topRight: const Radius.circular(30.0),
+                              bottomLeft: const Radius.circular(30.0),
+                              bottomRight: const Radius.circular(30.0),
+                            ),
+                          ),
+                          child:new Center(
+                            child: new Text(
+                              txt1 ? (teamStr + '\n' + pointStr) : 'Loading Data',
+                              textScaleFactor: 1.5,
+                              textAlign: TextAlign.center,
+                              style: new TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          )
+                      ),
+                    ),
+                  ),
+                ],
+              )//: new Center(child: new Text('Loading Data'))
             ],
           )
         ],
