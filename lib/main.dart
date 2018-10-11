@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'register_page.dart';
+import 'package:flutter/services.dart';
 import 'home-page.dart';
 import 'round1_page.dart';
 import 'task1_page.dart';
@@ -8,7 +9,13 @@ import 'task2_page.dart';
 import 'task3_page.dart';
 
 
-void main() => runApp(SUBGApp());
+void main(){
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(SUBGApp());
+  });
+  //runApp(SUBGApp());
+}
 
 class SUBGApp extends StatelessWidget {
   var page;
