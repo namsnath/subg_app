@@ -121,6 +121,7 @@ class _Round1PageState extends State<Round1Page> {
   }
 
   getLocation() async{
+    await getPoints();
     GeolocationStatus geolocationStatus  = await Geolocator().checkGeolocationPermissionStatus();
     if(geolocationStatus != GeolocationStatus.granted)
       await reqPermission();
@@ -216,6 +217,7 @@ class _Round1PageState extends State<Round1Page> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);*/
+    //getPoints();
     _Round1PageState.ctxt = context;
     this.btnColor = Theme.of(context).accentColor;
     this.btnEdgeInsets = EdgeInsets.symmetric(vertical: 16.0);
@@ -393,6 +395,12 @@ class _Round1PageState extends State<Round1Page> {
                               bottomRight: const Radius.circular(30.0),
                             ),
                           ),
+
+                          child: GestureDetector(
+                            // When the child is tapped, show a snackbar
+                              onTap: () {
+                                getPoints();
+                              },
                           child:new Center(
                             child: new Text(
                               txt1 ? (teamStr + '\n' + pointStr) : 'Loading Data',
@@ -402,7 +410,7 @@ class _Round1PageState extends State<Round1Page> {
                                 color: Colors.black,
                               ),
                             ),
-                          )
+                          ))
                       ),
                     ),
                   ),
