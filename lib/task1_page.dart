@@ -142,8 +142,14 @@ class Task1_State extends State<Task1>{
             print('Assign Task');
             print(ares.body);
             var adata = await jsonDecode(ares.body);
-            taskData = adata['reqTask'][0]['name'] + "\n" + adata['reqTask'][0]['description'];
-            txt1 = true;
+
+            if(adata['reqTask'].length == 0)
+              txt1 = false;
+            else {
+              taskData = adata['reqTask'][0]['name'] + "\n" +
+                  adata['reqTask'][0]['description'];
+              txt1 = true;
+            }
           });
         }
         else {

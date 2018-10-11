@@ -214,6 +214,13 @@ class Task3_State extends State<Task3>{
             //print(res.body);
             var adata = await jsonDecode(ares.body);
             print(adata);
+            if(adata['reqTask'].length == 0)
+            {
+              txt1 = false;
+              txt2 = false;
+              txt3 = false;
+            }
+
             if(adata['reqTask'].length == 1) {
               taskData1 = adata[0]['reqTask']['name'] + "\n" + adata[0]['reqTask']['description'];
               txt1 = true;

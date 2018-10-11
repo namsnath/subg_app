@@ -188,7 +188,7 @@ class _Round1PageState extends State<Round1Page> {
       if(data.length == 0)
         points = '0';
       else {
-        data = data[0];
+        data = data[data.length - 1];
         points = data['totalPoints'].toString();
       }
       print(points);
