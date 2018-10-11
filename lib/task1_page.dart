@@ -54,7 +54,7 @@ class Task1_State extends State<Task1>{
           children: <Widget>[
             new Container(
               decoration: new BoxDecoration(
-                  image: new DecorationImage(image: new AssetImage('assets/images/LOcation.png'),
+                  image: new DecorationImage(image: new AssetImage('assets/images/LandingPage.jpg'),
                     fit: BoxFit.cover,
                   )
               ),
