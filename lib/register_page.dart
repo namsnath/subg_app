@@ -224,7 +224,7 @@ class _RegisterPageState extends State<RegisterPage> {
         /*if (value.length == 0) {
           return 'Participant name cannot be empty';
         }*/
-        if (!reglist.contains(value))
+        if (!reglist.contains(value) && value != "")
           return 'Enter valid participant name';
         else if (value == _typeAheadController1.text || value == _typeAheadController2.text)
           return 'Both participants cannot be the same';
@@ -256,6 +256,7 @@ class _RegisterPageState extends State<RegisterPage> {
       appBar: AppBar(
         title: Text('Registration Page'),
       ),
+      resizeToAvoidBottomPadding: false,
       key: _registerScaffoldKey,
       body: visibilityForm?
       new Stack(
@@ -269,6 +270,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
           ),
           new ListView(
+            //width: 100.0,
             children: <Widget>[
               //new Container(height: 90.0),
               /*new Text("Register",textScaleFactor: 3.0,

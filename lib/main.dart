@@ -18,7 +18,9 @@ class SUBGApp extends StatelessWidget {
     RegisterPage.tag: (context) => RegisterPage(),
     HomePage.tag: (context) => HomePage(),
     Round1Page.tag: (context) => Round1Page(),
-
+    Task1.tag: (context) => Task1(),
+    Task2.tag: (context) => Task2(),
+    Task3.tag: (context) => Task3(),
   };
 
   void init() async {

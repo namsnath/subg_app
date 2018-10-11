@@ -50,9 +50,7 @@ class Task3_State extends State<Task3>{
   Widget build(BuildContext context) {
     // TODO: implement build
     print(visible);
-    return new MaterialApp(
-        title: "Task Type 3",
-        home: new Scaffold(
+    return Scaffold(
           appBar: new AppBar(title: new Text("Task Type 3"), backgroundColor: Colors.blueAccent[700],),
           body: new Stack(
             children: <Widget>[
@@ -166,7 +164,6 @@ class Task3_State extends State<Task3>{
 
 
 
-        )
     );
   }
 

@@ -51,9 +51,7 @@ class Task2_State extends State<Task2>{
   Widget build(BuildContext context) {
     // TODO: implement build
     print(visible);
-    return new MaterialApp(
-        title: "Task Type 2",
-        home: new Scaffold(
+    return new Scaffold(
           appBar: new AppBar(title: new Text("Task Type 2"), backgroundColor: Colors.blueAccent[700],),
           body: new Stack(
             children: <Widget>[
@@ -132,8 +130,7 @@ class Task2_State extends State<Task2>{
             child: visible ? new Text(txt1 ? taskData.toString() : "No Tasks")
                 : new Center(child: new Text("Loading Data"))
         ),*/
-        )
-    );
+        );
   }
 
   void init() async{

@@ -188,7 +188,7 @@ class _Round1PageState extends State<Round1Page> {
         points = '0';
       else {
         data = data[0];
-        points = data['totalPoints'];
+        points = data['totalPoints'].toString();
       }
       print(points);
     });
@@ -196,7 +196,7 @@ class _Round1PageState extends State<Round1Page> {
     setState(() {
       teamID;
       points;
-      teamStr = 'Team ID: \n$teamIDSplit';
+      teamStr = 'Team ID: \n$teamID';
       pointStr = '\nPoints: $points';
       visible = true;
       txt1 = true;
@@ -276,6 +276,7 @@ class _Round1PageState extends State<Round1Page> {
               child: Text('Task Type 3'),
 
               onPressed: (posString == 'Unknown') ? (){} : () async {
+                //Navigator.of(context).pushReplacement(Task1.tag);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Task3_Page(location: posString)),
@@ -308,6 +309,7 @@ class _Round1PageState extends State<Round1Page> {
     //Build UI
     return Scaffold(
         key: _round1ScaffoldKey,
+        resizeToAvoidBottomPadding: false,
         appBar: new AppBar(
           title: new Text("Round 1"),
         ),
@@ -320,7 +322,10 @@ class _Round1PageState extends State<Round1Page> {
                 )
             ),
           ),
-          new Column(
+
+
+            new Column(
+            //shrinkWrap: true,
             children: <Widget>[
               new Container(height: 20.0,),
               new Center(
@@ -393,7 +398,7 @@ class _Round1PageState extends State<Round1Page> {
               )//: new Center(child: new Text('Loading Data'))
             ],
           )
-        ],
+          ],
       ),
     );
   }
