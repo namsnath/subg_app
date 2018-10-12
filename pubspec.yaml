@@ -11,7 +11,7 @@ dependencies:
   shared_preferences: ^0.4.2
   flutter_typeahead: ^0.3.0
   simple_permissions: ^0.1.6
-  geolocator: ^1.7.0
+  geolocator: ^2.0.1
   http: ^0.11.3+17
   flutter_launcher_icons: ^0.6.1
 
