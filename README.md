@@ -6,3 +6,4 @@ Flutter app for SUBG
 
 For help getting started with Flutter, view our online
 [documentation](https://flutter.io/).
+# subg_app
